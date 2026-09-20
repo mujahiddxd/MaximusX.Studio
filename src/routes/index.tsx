@@ -278,17 +278,40 @@ export const CONTEXTS_DATA: Record<string, ContextData> = {
 };
 
 export default function MaximusXPortfolio() {
+  // Navigation & Path state: /chudaan navigates to admin panel
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return window.location.pathname;
+    }
+    return "/";
+  });
+
   const [activeMode, setActiveMode] = useState<string>("video-editing");
   const [activeNav, setActiveNav] = useState<string>("profile");
   const [isCrossFading, setIsCrossFading] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Admin Modal state
-  const [showAdminModal, setShowAdminModal] = useState<boolean>(false);
+  // Admin state for /chudaan route
   const [adminLoggedIn, setAdminLoggedIn] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>("");
   const [adminPassword, setAdminPassword] = useState<string>("");
   const [activeAdminTab, setActiveAdminTab] = useState<string>("shorts");
+
+  // Listen to browser back/forward and path updates
+  useEffect(() => {
+    const onLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener("popstate", onLocationChange);
+    return () => window.removeEventListener("popstate", onLocationChange);
+  }, []);
+
+  const navigateTo = (path: string) => {
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", path);
+      setCurrentPath(path);
+    }
+  };
 
   const currentContext = CONTEXTS_DATA[activeMode] || CONTEXTS_DATA["video-editing"];
 
@@ -304,6 +327,8 @@ export default function MaximusXPortfolio() {
 
   // IntersectionObserver for Bottom Nav tracking
   useEffect(() => {
+    if (currentPath === "/chudaan" || currentPath === "/chudaan/") return;
+
     const sections = ["profile-section", "shorts-section", "contact-section", "longs-section"];
     const observer = new IntersectionObserver(
       (entries) => {
@@ -325,7 +350,7 @@ export default function MaximusXPortfolio() {
     });
 
     return () => observer.disconnect();
-  }, [activeMode]);
+  }, [activeMode, currentPath]);
 
   // Bottom Nav Scroll Handler
   const scrollToSection = (targetId: string, navKey: string) => {
@@ -351,20 +376,215 @@ export default function MaximusXPortfolio() {
     }
   };
 
+  // ─── If on /chudaan: Render Wireframe 2 Admin Panel ─────────────
+  if (currentPath.toLowerCase().startsWith("/chudaan")) {
+    return (
+      <div className="app-container" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        {/* Top Wireframe URL Bar */}
+        <div style={{
+          width: "100%",
+          maxWidth: 480,
+          marginBottom: 20,
+          padding: "10px 16px",
+          background: "rgba(14, 43, 52, 0.8)",
+          border: "1.5px solid var(--border-teal)",
+          borderRadius: "var(--radius-sm)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}>
+          <span style={{ fontFamily: "var(--font-heading)", fontSize: 13, color: "var(--teal-cyan)" }}>
+            Maximusx.studio/chudaan
+          </span>
+          <button
+            onClick={() => navigateTo("/")}
+            style={{ fontSize: 12, color: "var(--color-gold-light)", fontWeight: 600 }}
+          >
+            ← View Portfolio
+          </button>
+        </div>
+
+        {/* Credentials Form Box (Matching Wireframe 2) */}
+        {!adminLoggedIn ? (
+          <div style={{
+            width: "100%",
+            maxWidth: 480,
+            background: "#0c252d",
+            border: "2px solid #15A4BC",
+            borderRadius: "var(--radius-md)",
+            padding: "40px 32px",
+            boxShadow: "0 16px 40px rgba(0,0,0,0.6)"
+          }}>
+            <h2 style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: 24,
+              fontWeight: 800,
+              color: "#F3C766",
+              textAlign: "center",
+              marginBottom: 28
+            }}>
+              Enter Credentials:
+            </h2>
+
+            <form onSubmit={handleAdminLogin} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Enter ID"
+                  value={adminId}
+                  onChange={(e) => setAdminId(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "14px 18px",
+                    background: "#4A2020",
+                    border: "1.5px solid #8B3A3A",
+                    borderRadius: "var(--radius-sm)",
+                    color: "#FFFFFF",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    outline: "none",
+                    textAlign: "center"
+                  }}
+                  required
+                />
+              </div>
+
+              <div>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "14px 18px",
+                    background: "#4A2020",
+                    border: "1.5px solid #8B3A3A",
+                    borderRadius: "var(--radius-sm)",
+                    color: "#FFFFFF",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    outline: "none",
+                    textAlign: "center"
+                  }}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{ width: "100%", padding: "14px", fontSize: 15, marginTop: 8 }}
+              >
+                Enter Admin
+              </button>
+            </form>
+          </div>
+        ) : (
+          /* Admin Panel Options (Matching Wireframe 2) */
+          <div style={{
+            width: "100%",
+            maxWidth: 480,
+            background: "#0c252d",
+            border: "2px solid #22C55E",
+            borderRadius: "var(--radius-md)",
+            padding: "36px 28px",
+            boxShadow: "0 16px 40px rgba(0,0,0,0.6)"
+          }}>
+            <div style={{
+              border: "1.5px solid #22C55E",
+              borderRadius: "var(--radius-sm)",
+              padding: "10px",
+              textAlign: "center",
+              marginBottom: 24
+            }}>
+              <h2 style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: 26,
+                fontWeight: 800,
+                color: "#FFFFFF"
+              }}>
+                Admin Panel
+              </h2>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <button
+                onClick={() => setActiveAdminTab("shorts")}
+                style={{
+                  padding: "20px 16px",
+                  background: activeAdminTab === "shorts" ? "#6B2626" : "#4A2020",
+                  border: `1.5px solid ${activeAdminTab === "shorts" ? "#D29543" : "#8B3A3A"}`,
+                  borderRadius: "var(--radius-sm)",
+                  color: "#FFFFFF",
+                  fontFamily: "var(--font-heading)",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "all var(--transition-fast)"
+                }}
+              >
+                Edit Short Videos
+              </button>
+
+              <button
+                onClick={() => setActiveAdminTab("longs")}
+                style={{
+                  padding: "20px 16px",
+                  background: activeAdminTab === "longs" ? "#6B2626" : "#4A2020",
+                  border: `1.5px solid ${activeAdminTab === "longs" ? "#D29543" : "#8B3A3A"}`,
+                  borderRadius: "var(--radius-sm)",
+                  color: "#FFFFFF",
+                  fontFamily: "var(--font-heading)",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "all var(--transition-fast)"
+                }}
+              >
+                Edit Long Videos
+              </button>
+
+              <button
+                onClick={() => setActiveAdminTab("clients")}
+                style={{
+                  padding: "20px 16px",
+                  background: activeAdminTab === "clients" ? "#6B2626" : "#4A2020",
+                  border: `1.5px solid ${activeAdminTab === "clients" ? "#D29543" : "#8B3A3A"}`,
+                  borderRadius: "var(--radius-sm)",
+                  color: "#FFFFFF",
+                  fontFamily: "var(--font-heading)",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "all var(--transition-fast)"
+                }}
+              >
+                Client Details
+              </button>
+            </div>
+
+            <div style={{ marginTop: 28, textAlign: "center", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 12, color: "var(--teal-cyan)" }}>
+                Active Section: <strong>{activeAdminTab.toUpperCase()}</strong>
+              </span>
+              <button
+                className="btn-secondary"
+                style={{ padding: "6px 14px", fontSize: 11 }}
+                onClick={() => setAdminLoggedIn(false)}
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ─── Public Portfolio Page (NO visible admin button) ─────────────
   return (
     <div className="app-container">
-      {/* Top Utility Header */}
-      <div className="top-bar">
-        <div className="top-bar-brand">MAXIMUSX</div>
-        <button
-          className="admin-trigger-btn"
-          onClick={() => setShowAdminModal(true)}
-          title="Open Admin Panel"
-        >
-          ⚙ Admin Panel
-        </button>
-      </div>
-
       {/* 1. Context Switcher Pills */}
       <div className="context-switcher-wrap">
         <div className="context-switcher-pills" role="tablist">
@@ -776,93 +996,6 @@ export default function MaximusXPortfolio() {
           <div className="gold-dot" />
         </button>
       </nav>
-
-      {/* Wireframe 2: Admin Panel Modal */}
-      {showAdminModal && (
-        <div className="admin-modal-backdrop" onClick={() => setShowAdminModal(false)}>
-          <div className="admin-modal-card" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="admin-modal-close"
-              onClick={() => setShowAdminModal(false)}
-            >
-              ✕
-            </button>
-
-            {!adminLoggedIn ? (
-              <div>
-                <h3 className="admin-wireframe-title">Enter Credentials:</h3>
-                <p className="admin-wireframe-subtitle">MaximusX Studio Admin Access</p>
-                <form onSubmit={handleAdminLogin}>
-                  <div className="admin-field-group">
-                    <input
-                      type="text"
-                      className="admin-input-box"
-                      placeholder="Enter ID"
-                      value={adminId}
-                      onChange={(e) => setAdminId(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="admin-field-group">
-                    <input
-                      type="password"
-                      className="admin-input-box"
-                      placeholder="Enter Password"
-                      value={adminPassword}
-                      onChange={(e) => setAdminPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <button type="submit" className="btn-primary" style={{ width: "100%", marginTop: 8 }}>
-                    Login to Admin Panel
-                  </button>
-                </form>
-              </div>
-            ) : (
-              <div>
-                <h3 className="admin-wireframe-title">Admin Panel</h3>
-                <p className="admin-wireframe-subtitle">MaximusX Studio Content Manager</p>
-
-                <div className="admin-panel-btn-grid">
-                  <button
-                    className="admin-panel-tile-btn"
-                    onClick={() => setActiveAdminTab("shorts")}
-                  >
-                    Edit Short Videos
-                  </button>
-                  <button
-                    className="admin-panel-tile-btn"
-                    onClick={() => setActiveAdminTab("longs")}
-                  >
-                    Edit Long Videos
-                  </button>
-                  <button
-                    className="admin-panel-tile-btn"
-                    onClick={() => setActiveAdminTab("clients")}
-                  >
-                    Client Details
-                  </button>
-                </div>
-
-                <div style={{ marginTop: 20, textAlign: "center" }}>
-                  <span style={{ fontSize: 12, color: "var(--teal-cyan)" }}>
-                    ✓ Authenticated as {adminId || "Admin"} ({activeAdminTab.toUpperCase()} active)
-                  </span>
-                  <div style={{ marginTop: 12 }}>
-                    <button
-                      className="btn-secondary"
-                      style={{ padding: "6px 14px", fontSize: 11 }}
-                      onClick={() => setAdminLoggedIn(false)}
-                    >
-                      Log out
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
