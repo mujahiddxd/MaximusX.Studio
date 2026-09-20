@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import avatarImg from "../assets/avatar.jpg";
+import short1Thumb from "../assets/short_1.jpg";
+import short2Thumb from "../assets/short_2.jpg";
+import short3Thumb from "../assets/short_3.jpg";
 
 // ─── Creative Contexts Data Specification ───────────────────────────
 
@@ -8,8 +12,10 @@ export interface ShortItem {
   desc: string;
   tag: string;
   aspect: string;
-  thumbnailGradient: string;
+  thumbnailGradient?: string;
+  thumbnailImage?: string;
   videoUrl: string;
+  duration?: string;
 }
 
 export interface LongItem {
@@ -28,6 +34,7 @@ export interface CreatorItem {
   color: string;
   initials: string;
   profileUrl: string;
+  avatarUrl?: string;
 }
 
 export interface ContextData {
@@ -71,8 +78,10 @@ export const CONTEXTS_DATA: Record<string, ContextData> = {
         desc: "Seamless speed ramping and rhythm-cut sound design tailored for ultra-high engagement.",
         tag: "Velocity Reel",
         aspect: "9:16",
+        thumbnailImage: short1Thumb,
         thumbnailGradient: "linear-gradient(135deg, #2b1406 0%, #000000 100%)",
-        videoUrl: "https://youtube.com",
+        videoUrl: "https://www.youtube.com/shorts",
+        duration: "0:45",
       },
       {
         id: "s2",
@@ -80,8 +89,10 @@ export const CONTEXTS_DATA: Record<string, ContextData> = {
         desc: "30-second studio reveal optimized for first-3-second retention and brand conversion.",
         tag: "Commercial",
         aspect: "9:16",
+        thumbnailImage: short2Thumb,
         thumbnailGradient: "linear-gradient(135deg, #3d1b09 0%, #101920 100%)",
-        videoUrl: "https://youtube.com",
+        videoUrl: "https://www.youtube.com/shorts",
+        duration: "0:30",
       },
       {
         id: "s3",
@@ -89,17 +100,21 @@ export const CONTEXTS_DATA: Record<string, ContextData> = {
         desc: "Beat-synchronized transitions, optical glow overlays, and kinetic text integration.",
         tag: "Music Video",
         aspect: "9:16",
+        thumbnailImage: short3Thumb,
         thumbnailGradient: "linear-gradient(135deg, #1f3442 0%, #000000 100%)",
-        videoUrl: "https://youtube.com",
+        videoUrl: "https://www.youtube.com/shorts",
+        duration: "0:55",
       },
     ],
     creators: [
-      { id: "c1", name: "Jesser", subs: "5.4M Subs", color: "#ff7629", initials: "J", profileUrl: "https://youtube.com" },
-      { id: "c2", name: "SypherPK", subs: "6.8M Subs", color: "#e05e14", initials: "S", profileUrl: "https://youtube.com" },
-      { id: "c3", name: "Socksfor1", subs: "5.9M Subs", color: "#2a475a", initials: "SF", profileUrl: "https://youtube.com" },
-      { id: "c4", name: "Beast Reacts", subs: "32M Subs", color: "#ff8e47", initials: "BR", profileUrl: "https://youtube.com" },
-      { id: "c5", name: "LazarBeam", subs: "21M Subs", color: "#1f3442", initials: "LB", profileUrl: "https://youtube.com" },
-      { id: "c6", name: "Ali-A", subs: "18M Subs", color: "#ff7629", initials: "AA", profileUrl: "https://youtube.com" },
+      { id: "c1", name: "Jesser", subs: "18 Million", color: "#3B82F6", initials: "JS", profileUrl: "https://youtube.com/@Jesser" },
+      { id: "c2", name: "SypherPK", subs: "7 Million", color: "#EF4444", initials: "SP", profileUrl: "https://youtube.com/@SypherPK" },
+      { id: "c3", name: "Socksfor1", subs: "6 Million", color: "#06B6D4", initials: "SF", profileUrl: "https://youtube.com/@Socksfor1" },
+      { id: "c4", name: "Beast Reacts", subs: "32 Million", color: "#EC4899", initials: "BR", profileUrl: "https://youtube.com/@BeastReacts" },
+      { id: "c5", name: "LazarBeam", subs: "21 Million", color: "#F59E0B", initials: "LB", profileUrl: "https://youtube.com/@LazarBeam" },
+      { id: "c6", name: "MrBeast", subs: "240 Million", color: "#64748B", initials: "MB", profileUrl: "https://youtube.com/@MrBeast" },
+      { id: "c7", name: "Sidemen", subs: "21 Million", color: "#6366F1", initials: "SD", profileUrl: "https://youtube.com/@Sidemen" },
+      { id: "c8", name: "Ali-A", subs: "19 Million", color: "#10B981", initials: "AA", profileUrl: "https://youtube.com/@AliA" },
     ],
     longSectionTitle: "Cinematic & Long-Form Productions",
     longSectionSub: "Documentary deep-dives, episodic YouTube series, and premium commercial films.",
@@ -597,103 +612,159 @@ export default function MaximusXPortfolio() {
 
         {/* Dynamic Context Content */}
         <div className={isCrossFading ? "" : "content-crossfade"}>
-          {/* 1. Hero Section (Clean, Fluid, No Boxed Card) */}
-          <section className="hero-plain-section">
-            <div className="hero-eyebrow">
-              ✦ {currentContext.tagline}
+          {/* 1. Hero / Profile Section (Minimal, Clean, No Boxed Cards) */}
+          <section id="profile" className="profile-hero-minimal">
+            <div className="profile-author-header">
+              <div className="profile-avatar-clean">
+                <img src={avatarImg} alt="MaximusX Studio" className="profile-avatar-img" />
+              </div>
+              <div className="profile-title-block">
+                <h1 className="profile-brand-name">MaximusX Studio</h1>
+                <span className="profile-badge-pill">✦ Available for Select Projects</span>
+              </div>
             </div>
 
-            <h1 className="hero-main-title">
-              <span className="gradient-text">{currentContext.headline}</span>
-            </h1>
+            <div className="profile-bio-clean">
+              <h2 className="profile-greeting">Myself Mizan</h2>
+              <p className="profile-tagline-text">
+                ✦ {currentContext.tagline}
+              </p>
+              <p className="profile-headline-text">
+                {currentContext.headline}
+              </p>
+              <p className="profile-body-bio">
+                {currentContext.bio}
+              </p>
 
-            <p className="hero-description">
-              {currentContext.bio}
-            </p>
-
-            <div className="hero-actions-row">
-              <button
-                className="btn-primary"
-                onClick={() => scrollToSection("showcase")}
-              >
-                Explore Projects ↓
-              </button>
-              <button
-                className="btn-secondary"
-                onClick={() => scrollToSection("contact")}
-              >
-                Get In Touch
-              </button>
-            </div>
-
-            <div className="hero-stats-strip">
-              {currentContext.stats.map((st, i) => (
-                <div key={i} className="hero-stat-item">
-                  <span className="hero-stat-num">{st.value}</span>
-                  <span className="hero-stat-label">{st.label}</span>
-                </div>
-              ))}
+              <div className="profile-actions-inline">
+                <button
+                  className="btn-primary"
+                  onClick={() => scrollToSection("showcase")}
+                >
+                  Explore Projects ↓
+                </button>
+                <button
+                  className="btn-secondary"
+                  onClick={() => scrollToSection("contact")}
+                >
+                  Let's Talk →
+                </button>
+              </div>
             </div>
           </section>
 
-          {/* 2. Featured Video Showcase (Grid Gallery) */}
-          <section id="showcase" className="plain-section">
+          {/* 2. Featured Video Showcase (Alternating Layout, Clean Fluid Rows) */}
+          <section id="showcase" className="showcase-minimal-section">
             <div className="plain-section-header">
               <span className="section-label">Selected Works</span>
               <h2 className="section-title">{currentContext.shortSectionTitle}</h2>
               <p className="section-subtitle">{currentContext.shortSectionSub}</p>
             </div>
 
-            <div className="video-showcase-grid">
-              {currentContext.shorts.map((item) => (
-                <div key={item.id} className="showcase-item">
+            <div className="showcase-alternating-wrap">
+              {currentContext.shorts.map((item, index) => {
+                const isVideoLeft = index % 2 === 1; // 0: text left, video right; 1: video left, text right; 2: text left, video right
+                return (
                   <div
-                    className="showcase-video-viewport"
-                    style={{ background: item.thumbnailGradient }}
-                    onClick={() => window.open(item.videoUrl, "_blank")}
+                    key={item.id}
+                    className={`showcase-flow-row ${isVideoLeft ? "flow-video-left" : "flow-video-right"}`}
                   >
-                    <div className="showcase-play-btn" aria-label="Play video">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+                    {/* Description Block */}
+                    <div className="flow-desc-block">
+                      <span className="flow-item-tag">0{index + 1} // {item.tag}</span>
+                      <h3 className="flow-item-title">{item.title}</h3>
+                      <p className="flow-item-text">{item.desc}</p>
+                      <a
+                        href={item.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flow-item-cta"
+                      >
+                        <span>Watch Reel</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    </div>
+
+                    {/* Video Block (Simple YouTube Click-to-Play) */}
+                    <div className="flow-video-block">
+                      <div
+                        className="yt-short-card"
+                        onClick={() => window.open(item.videoUrl, "_blank")}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Watch ${item.title} on YouTube`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            window.open(item.videoUrl, "_blank");
+                          }
+                        }}
+                      >
+                        <img
+                          src={item.thumbnailImage || short1Thumb}
+                          alt={item.title}
+                          className="yt-short-thumb"
+                          loading="lazy"
+                        />
+                        <div className="yt-play-overlay">
+                          <div className="yt-play-btn" aria-label="Play on YouTube">
+                            <svg viewBox="0 0 68 48" className="yt-play-svg">
+                              <path
+                                className="yt-play-bg"
+                                d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
+                              />
+                              <path d="M45 24L27 14v20" fill="#ffffff" />
+                            </svg>
+                          </div>
+                        </div>
+                        {item.duration && (
+                          <span className="yt-duration-badge">{item.duration}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <span className="showcase-tag-pill">{item.tag}</span>
-                  <h3 className="showcase-item-title">{item.title}</h3>
-                  <p className="showcase-item-desc">{item.desc}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
-          {/* 3. Collaborations & Creators */}
-          <section id="collaborations" className="plain-section">
-            <div className="plain-section-header">
-              <span className="section-label">Partnerships</span>
-              <h2 className="section-title">Trusted by Leading Creators & Channels</h2>
-              <p className="section-subtitle">
-                Proud to have collaborated on high-impact projects generating millions of views across global platforms.
-              </p>
+          {/* 3. Collaborations & Creators (Clean Squircle App-Icon Grid with 40px Spacing) */}
+          <section id="collaborations" className="creators-section-clean">
+            <div className="creators-heading-wrap">
+              <h2 className="creators-section-title">Creators I've Worked With:</h2>
             </div>
 
-            <div className="creators-grid">
+            <div className="creators-squircle-grid">
               {currentContext.creators.map((c) => (
                 <a
                   key={c.id}
                   href={c.profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="creator-fluid-item"
+                  className="creator-squircle-card"
+                  title={`View ${c.name}'s channel`}
                 >
                   <div
-                    className="creator-fluid-badge"
-                    style={{ background: c.color }}
+                    className="creator-squircle-box"
+                    style={{
+                      background: c.color
+                        ? `linear-gradient(145deg, ${c.color}f0 0%, ${c.color}b0 100%)`
+                        : "linear-gradient(145deg, #2563EB 0%, #1D4ED8 100%)",
+                      boxShadow: c.color ? `0 10px 24px ${c.color}35` : "0 10px 24px rgba(0,0,0,0.5)",
+                    }}
                   >
-                    {c.initials}
+                    {c.avatarUrl ? (
+                      <img src={c.avatarUrl} alt={c.name} className="creator-squircle-img" />
+                    ) : (
+                      <span className="creator-placeholder-initials-bold">
+                        {c.initials}
+                      </span>
+                    )}
                   </div>
-                  <div className="creator-fluid-details">
-                    <span className="creator-fluid-name">{c.name}</span>
-                    <span className="creator-fluid-subs">{c.subs}</span>
+                  <div className="creator-info-block">
+                    <span className="creator-name">{c.name}</span>
+                    <span className="creator-subs">{c.subs}</span>
                   </div>
                 </a>
               ))}
