@@ -7,13 +7,13 @@ export const initialContent = {
         headline: 'Every frame.\nA little more feeling.',
         bio: 'I turn raw footage into stories worth staying for. Thoughtful edits, a strong sense of rhythm, and the details that make your content feel unmistakably you.',
         avatar: '/avatar.jpg', available: true, availability: 'Available for new projects', location: 'Based in India · Working everywhere',
-        email: '', phone: '', whatsapp: '', xUrl: '', demo: true,
+        email: '', phone: '', whatsapp: '', discordUrl: '', xUrl: '', demo: true,
     },
     sections: {
         shortTitle: 'Small screen. Big impression.', shortDescription: 'A few seconds to stop the scroll. A story that stays a little longer.',
         creatorsTitle: 'Good stories take good company.', creatorsDescription: 'A space for the creators and brands behind the work.',
         longTitle: 'Room for the whole story.', longDescription: 'Longer films. Deeper narratives. The same attention to every frame.',
-        contactTitle: 'Let’s make something\nworth watching.', contactDescription: 'Have a story in mind? Tell me a little about it. I’d love to help bring it to life.',
+        contactTitle: 'Let’s connect.', contactDescription: 'Have an idea? Let’s talk about it.',
     },
     contexts: [{ id: 'video-editing', name: 'Video editing', description: 'Stories, shaped in the edit.' }],
     projects: [
@@ -91,6 +91,7 @@ export function validateContent(input) {
     profile.whatsapp = string(p.whatsapp, 'WhatsApp', 20);
     if (profile.whatsapp && !/^\+?\d{7,15}$/.test(profile.whatsapp))
         throw new Error('WhatsApp needs a country code and 7–15 digits.');
+    profile.discordUrl = url(p.discordUrl || '', 'Discord invite');
     profile.xUrl = url(p.xUrl, 'X profile');
     const sections = {};
     for (const key of Object.keys(initialContent.sections))

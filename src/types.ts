@@ -11,6 +11,7 @@ export interface Profile {
     email: string;
     phone: string;
     whatsapp: string;
+    discordUrl: string;
     xUrl: string;
     demo: boolean;
 }
