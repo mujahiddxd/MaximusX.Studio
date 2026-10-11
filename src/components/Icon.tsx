@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-export type IconName = 'arrow' | 'arrowDown' | 'play' | 'film' | 'grid' | 'home' | 'mail' | 'phone' | 'x' | 'close' | 'chevron' | 'check' | 'plus' | 'upload' | 'logout' | 'eye' | 'settings' | 'users' | 'edit' | 'trash' | 'up' | 'down' | 'lock' | 'spark';
+export type IconName = 'arrow' | 'arrowDown' | 'play' | 'film' | 'grid' | 'home' | 'mail' | 'phone' | 'whatsapp' | 'discord' | 'x' | 'close' | 'chevron' | 'check' | 'plus' | 'upload' | 'logout' | 'eye' | 'settings' | 'users' | 'edit' | 'trash' | 'up' | 'down' | 'lock' | 'spark';
 const paths: Record<IconName, ReactNode> = {
     arrow: <path d="M5 12h14M13 6l6 6-6 6"/>,
     arrowDown: <path d="M12 4v16M6 14l6 6 6-6"/>,
@@ -9,6 +9,8 @@ const paths: Record<IconName, ReactNode> = {
     home: <path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/>,
     mail: <><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 6 9 7 9-7"/></>,
     phone: <path d="M7 3H4a1 1 0 0 0-1 1c0 9 8 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2c-3-1-6-4-7-7l2-2z"/>,
+    whatsapp: <><path d="M20.2 11.6a8.2 8.2 0 0 1-12.1 7.2L4 20l1.2-4a8.2 8.2 0 1 1 15-4.4Z"/><path d="M9.2 8.2c-.3-.5-.6-.5-.9-.2-.5.5-.7 1.1-.4 1.9.8 2 2.5 3.7 4.5 4.5.8.3 1.4.1 1.9-.4.3-.3.3-.6-.2-.9l-1.4-.8-.9.7a6.8 6.8 0 0 1-2.6-2.6l.7-.9Z"/></>,
+    discord: <><path d="M7 6.3c3.2-1.7 6.8-1.7 10 0l1.6 2.2c1 2.2 1.5 4.6 1.4 7-1.3 1-2.8 1.8-4.4 2.2l-.8-1.2M7 6.3 5.4 8.5c-1 2.2-1.5 4.6-1.4 7 1.3 1 2.8 1.8 4.4 2.2l.8-1.2M9 15.4c2 .9 4 .9 6 0"/><circle cx="9" cy="12" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r=".8" fill="currentColor" stroke="none"/></>,
     x: <path d="m4 3 12 18h4L8 3zM20 3l-7 8M4 21l7-8"/>,
     close: <path d="m6 6 12 12M6 18 18 6"/>,
     chevron: <path d="m7 10 5 5 5-5"/>,
