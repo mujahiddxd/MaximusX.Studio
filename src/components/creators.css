@@ -1,0 +1,77 @@
+.creators-section.creators-directory {
+  padding: 48px 0 32px;
+  margin: 0;
+  text-align: left;
+  background: var(--bg);
+}
+.creators-directory .creators-intro h2 {
+  font-family: inherit;
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.3;
+  letter-spacing: -.5px;
+  margin: 12px 0 18px;
+}
+.creator-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.creator-filters button {
+  min-height: 44px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: #272420;
+  color: var(--body);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.creator-filters button[aria-pressed="true"] {
+  color: #171513;
+  background: #e7ddcb;
+}
+.creator-filters button:hover { background: #3d3630; color: var(--ink); }
+.creator-filters button:focus-visible,
+.creators-directory a.creator-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.creators-directory .creators-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  max-width: none;
+  margin: 0;
+}
+.creators-directory .creator-card {
+  min-width: 0;
+  min-height: 132px;
+  padding: 16px;
+  border: 1px solid #302c28;
+  border-radius: 8px;
+  background: var(--bg);
+  align-items: flex-start;
+  gap: 2px;
+  overflow-wrap: anywhere;
+}
+.creators-directory a.creator-card:hover { background: #211e1b; border-color: var(--muted); }
+.creators-directory .creator-avatar {
+  display: flex;
+  border: 0;
+  border-radius: 0;
+  width: auto;
+  height: 34px;
+  margin-bottom: 10px;
+  font-family: inherit;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #ded3bf;
+}
+.creators-directory .creator-avatar img { width: 34px; height: 34px; border-radius: 4px; }
+.creators-directory .creator-card strong { font-size: 18px; line-height: 1.4; }
+.creators-directory .creator-detail { font-size: 15px; line-height: 1.5; }
+.creators-directory .creator-arrow { top: 20px; right: 16px; color: var(--muted); transform: rotate(-45deg); }
+.creators-directory .demo-caption { margin-top: 16px; font-size: 14px; }
+.creator-result { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (max-width: 560px) {
+  .creators-directory .creators-grid { grid-template-columns: minmax(0, 1fr); }
+  .creators-section.creators-directory { padding: 36px 0 28px; }
+}
